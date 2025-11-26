@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'navigation',
     'operations',
     'communications',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

@@ -4,7 +4,14 @@ from rest_framework import status
 from .services import get_smart_route
 from .models import Checkpoint, Route
 from .serializers import CheckpointSerializer, RouteSerializer
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+@method_decorator(csrf_exempt, name='dispatch')
 class SmartRouteAPIView(APIView):
     """
     API endpoint to get a smart route.
@@ -46,6 +53,7 @@ class OfflineDataAPIView(APIView):
 from datetime import datetime
 from django.utils import timezone
 
+@method_decorator(csrf_exempt, name='dispatch')
 class SyncDataAPIView(APIView):
     """
     API endpoint to provide data that has been updated since a given timestamp (delta sync).
