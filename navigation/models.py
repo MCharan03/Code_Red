@@ -9,6 +9,7 @@ class Checkpoint(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     is_choke_point = models.BooleanField(default=False, help_text="Is this a known traffic choke-point?")
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -23,6 +24,7 @@ class Route(models.Model):
     # Overall calculated stats for the route
     total_distance = models.FloatField(help_text="Total distance in kilometers.")
     estimated_duration_mins = models.IntegerField(help_text="Estimated travel time in minutes without stops.")
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Route from {self.start_checkpoint} to {self.end_checkpoint}"
