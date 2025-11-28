@@ -1,10 +1,191 @@
-/* style.css
-    Most styling is handled by Tailwind utility classes in the HTML.
-    Specific overrides can go here if necessary.
-*/
+/* General Body and Theme */
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #fff;
+    color: #000;
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+}
 
-/* Optional: Ensure inputs focus state matches the stark aesthetic */
-select:focus, button:focus {
-    outline: 2px solid #000;
-    outline-offset: 1px;
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 2px solid #000;
+    padding: 15px;
+}
+
+i {
+    margin-right: 8px;
+}
+
+/* Header */
+.header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* Navigation */
+.navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 15px;
+}
+
+.navigation button {
+    background-color: #fff;
+    border: 1px solid #000;
+    padding: 6px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-family: inherit;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.navigation button:hover {
+    background-color: #f0f0f0;
+}
+
+/* Main Content */
+.main-content h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Status Section */
+.status-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.data-sync {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.data-sync .icon-button {
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 0;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.data-sync .timestamp {
+    color: #555;
+}
+
+.online-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #000;
+    padding: 5px 10px;
+}
+
+/* Route Parameters */
+.route-parameters {
+    border: 1px solid #000;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.route-parameters h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group label {
+    font-weight: bold;
+    flex-basis: 150px; /* Adjust as needed */
+}
+
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    font-family: inherit;
+    border: 1px solid #000;
+    background: #fff;
+    font-weight: bold;
+}
+
+.generate-route {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #000;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    font-size: 1em;
+}
+.generate-route:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* Footer Status */
+.footer-status {
+    padding-top: 10px;
+    margin-top: 15px;
+}
+
+.awaiting-params, .satellite-link {
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 8px 0;
+}
+
+.zoom-controls {
+    margin-top: 15px;
+}
+
+.zoom-controls button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #000;
+    background-color: #f0f0f0;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 5px;
+}
+.zoom-controls button:hover {
+    background-color: #e0e0e0;
 }
