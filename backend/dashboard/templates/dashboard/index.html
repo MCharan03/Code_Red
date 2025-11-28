@@ -3,35 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convoy Optimizer Dashboard</title>
+    <title>Convoy Ops | Command</title>
     {% load static %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'dashboard/style.css' %}">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Times New Roman"', 'Times', 'serif'],
+                        sans: ['Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <header>
-        <h1>Convoy Optimizer Dashboard</h1>
+<body class="bg-white text-black p-8 font-serif max-w-5xl mx-auto">
+
+    <header class="mb-6">
+        <div class="flex items-center space-x-2 mb-4">
+            <i class="fa-solid fa-shield-halved text-3xl"></i>
+            <h1 class="text-2xl font-bold tracking-wider uppercase">CONVOY_OPS</h1>
+        </div>
+
+        <nav class="flex border-b border-black w-full text-lg">
+            <button class="flex items-center space-x-2 border border-black px-4 py-1 mr-[-1px] bg-gray-100 font-sans font-semibold">
+                <i class="fa-regular fa-map"></i>
+                <span>Navigation</span>
+            </button>
+            <button class="flex items-center space-x-2 border border-black px-4 py-1 mr-[-1px] bg-white hover:bg-gray-50 font-sans">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Active Convoys</span>
+            </button>
+            <button class="flex items-center space-x-2 border border-black px-4 py-1 mr-[-1px] bg-white hover:bg-gray-50 font-sans">
+                <i class="fa-solid fa-tower-broadcast"></i>
+                <span>Comms Relay</span>
+            </button>
+            <button class="flex items-center space-x-2 border border-black px-4 py-1 mr-[-1px] bg-white hover:bg-gray-50 font-sans">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Intel Analytics</span>
+            </button>
+        </nav>
+        <div class="mt-2">
+            <button class="flex items-center space-x-2 border border-black px-3 py-1 bg-gray-100 text-sm font-sans">
+                <i class="fa-solid fa-gear"></i>
+                <span>System Config</span>
+            </button>
+        </div>
     </header>
 
-    <main>
-        <section id="smart-route-section">
-            <h2>AI: Smart Route & Terrain Intelligence</h2>
-            <form id="smart-route-form">
-                <input type="text" id="start-checkpoint" placeholder="Start Checkpoint ID (e.g., uuid1)" value="uuid1" required>
-                <input type="text" id="end-checkpoint" placeholder="End Checkpoint ID (e.g., uuid2)" value="uuid2" required>
-                <button type="submit">Get Smart Route</button>
-            </form>
-            <div id="smart-route-result" class="result-box">
-                <pre>Route data will appear here...</pre>
-            </div>
-        </section>
+    <main class="grid grid-cols-1 md:grid-cols-12 gap-8">
+        
+        <div class="md:col-span-5 space-y-8">
+            
+            <section>
+                <h2 class="text-3xl font-bold mb-4 uppercase">ANALYTICS</h2>
+                
+                <div class="flex items-center space-x-4 mb-2 font-sans">
+                    <span class="text-lg">Data Sync</span>
+                    <button id="fetch-offline-data" class="border border-black p-2 hover:bg-gray-200 transition">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                </div>
+                
+                <div class="font-sans text-sm mb-3">
+                    LAST: <span id="sync-timestamp">16:04:40</span>
+                </div>
 
-        <section id="offline-data-section">
-            <h2>USP: Offline-First Navigation</h2>
-            <button id="fetch-offline-data">Fetch All Data for Offline Mode</button>
-            <div id="offline-data-result" class="result-box">
-                <pre>Offline data will appear here...</pre>
+                <div class="inline-flex items-center space-x-2 border border-black px-3 py-1 font-sans">
+                    <i class="fa-solid fa-wifi"></i>
+                    <span class="font-bold">ONLINE</span>
+                </div>
+                
+                <div id="offline-data-result" class="hidden mt-2 p-2 bg-gray-100 border border-gray-300 text-xs font-mono h-32 overflow-auto"></div>
+            </section>
+
+            <section>
+                <h3 class="text-xl font-sans mb-2">Route Parameters</h3>
+                <form id="smart-route-form" class="space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <label class="w-32 font-sans">Start Checkpoint</label>
+                        <select id="start-checkpoint" class="border border-black p-1 w-full font-sans bg-white">
+                            <option value="" disabled>Select Origin...</option>
+                            <option value="uuid1" selected>Alpha Base (uuid1)</option>
+                            <option value="uuid3">Charlie Outpost (uuid3)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <label class="w-32 font-sans">Target Destination</label>
+                        <select id="end-checkpoint" class="border border-black p-1 w-full font-sans bg-white">
+                            <option value="" disabled>Select Destination...</option>
+                            <option value="uuid2" selected>Bravo Point (uuid2)</option>
+                            <option value="uuid4">Delta Camp (uuid4)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="flex items-center space-x-2 text-gray-400 border border-gray-300 bg-gray-100 px-4 py-2 mt-4 w-full justify-center hover:bg-gray-200 hover:text-black transition">
+                        <i class="fa-regular fa-paper-plane"></i>
+                        <span class="uppercase tracking-wide font-sans font-bold">Generate Smart Route</span>
+                    </button>
+                </form>
+            </section>
+            
+            <div class="text-4xl mt-4">
+                <i class="fa-regular fa-map"></i>
             </div>
-        </section>
+        </div>
+
+        <div class="md:col-span-7 flex flex-col justify-between">
+            <div>
+                <h3 class="text-xl font-bold uppercase mb-6 tracking-wide">AWAITING ROUTE PARAMETERS</h3>
+                <p class="font-sans text-lg mb-4">SECURE SATELLITE LINK ESTABLISHED</p>
+                
+                <div id="smart-route-result" class="border-t border-b border-black py-4 font-mono text-sm min-h-[200px] bg-gray-50 p-4">
+                    <span class="text-gray-500">// Route data stream will initialize here...</span>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <div class="flex border border-black w-min">
+                    <button class="px-3 py-1 border-r border-black hover:bg-gray-200 font-bold text-xl">+</button>
+                    <button class="px-3 py-1 hover:bg-gray-200 font-bold text-xl">-</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script src="{% static 'dashboard/script.js' %}"></script>

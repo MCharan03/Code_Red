@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     smartRouteForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        smartRouteResult.innerHTML = '<pre>Fetching smart route...</pre>';
+        smartRouteResult.innerHTML = '<span class="text-blue-700 animate-pulse">> ESTABLISHING UPLINK... FETCHING ROUTE DATA</span>';
 
         const startId = document.getElementById('start-checkpoint').value;
         const endId = document.getElementById('end-checkpoint').value;
@@ -16,9 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // Django requires a CSRF token for POST requests, but for this simple demo,
-                    // we'll assume the API view is configured to not require it or we're using a workaround.
-                    // For a real app, you'd fetch the token and include it.
                 },
                 body: JSON.stringify({
                     start_checkpoint_id: startId,
@@ -31,20 +28,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            smartRouteResult.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            // Format the output to look technical
+            smartRouteResult.innerHTML = `<pre class="whitespace-pre-wrap text-xs">${JSON.stringify(data, null, 2)}</pre>`;
 
         } catch (error) {
-            smartRouteResult.innerHTML = `<pre>Error: ${error.message}</pre>`;
+            smartRouteResult.innerHTML = `<span class="text-red-600">> ERROR: ${error.message}</span>`;
         }
     });
 
 
-    // --- Offline Data Feature ---
+    // --- Offline Data Feature (Mapped to the Refresh Icon) ---
     const fetchOfflineDataBtn = document.getElementById('fetch-offline-data');
     const offlineDataResult = document.getElementById('offline-data-result');
+    const syncTimestamp = document.getElementById('sync-timestamp');
 
     fetchOfflineDataBtn.addEventListener('click', async () => {
-        offlineDataResult.innerHTML = '<pre>Fetching all offline data...</pre>';
+        // Visual feedback on the button icon
+        const icon = fetchOfflineDataBtn.querySelector('i');
+        icon.classList.add('fa-spin');
+        
+        // Show the hidden debug box for a moment
+        offlineDataResult.classList.remove('hidden');
+        offlineDataResult.innerHTML = '> SYNCING OFFLINE DATABASE...';
 
         try {
             const response = await fetch('/navigation/api/offline-data/');
@@ -54,10 +59,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            offlineDataResult.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            
+            // Update timestamp to current time
+            const now = new Date();
+            syncTimestamp.innerText = now.toLocaleTimeString('en-GB');
+
+            offlineDataResult.innerHTML = `> SYNC COMPLETE. ${data.checkpoints.length} Checkpoints, ${data.routes.length} Routes cached.`;
+            
+            // Hide the debug box after 3 seconds to keep UI clean
+            setTimeout(() => {
+                offlineDataResult.classList.add('hidden');
+                icon.classList.remove('fa-spin');
+            }, 3000);
 
         } catch (error) {
-            offlineDataResult.innerHTML = `<pre>Error: ${error.message}</pre>`;
+            offlineDataResult.innerHTML = `> SYNC FAILED: ${error.message}`;
+            icon.classList.remove('fa-spin');
         }
     });
 
