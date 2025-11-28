@@ -1,36 +1,53 @@
 # navigation/services.py
-"""
-Core service layer for AI-powered navigation logic.
-"""
+from .models import Checkpoint
 
 def get_smart_route(start_checkpoint_id, end_checkpoint_id):
     """
     Analyzes terrain and conditions to generate the safest and fastest route.
-    
-    This is the core function for AI Feature 1. For the prototype, this will
-    contain placeholder logic that simulates the analysis.
+    This mock version generates a plausible route between two actual checkpoints.
     """
-    # 1. Placeholder: Simulate fetching terrain data (e.g., elevation, slope)
-    #    In a real system, this would query a GIS database or external API.
-    print(f"Analyzing terrain from checkpoint {start_checkpoint_id} to {end_checkpoint_id}...")
+    try:
+        start_cp = Checkpoint.objects.get(id=start_checkpoint_id)
+        end_cp = Checkpoint.objects.get(id=end_checkpoint_id)
+    except Checkpoint.DoesNotExist:
+        return {"error": "Invalid checkpoint ID provided."}
 
-    # 2. Placeholder: Simulate AI risk scoring for route segments
-    #    This would involve a trained model to calculate the Terrain Risk Score (TARI).
-    simulated_risk_score = 2 # Simulating a moderate risk
+    print(f"Analyzing terrain from {start_cp.name} to {end_cp.name}...")
 
-    # 3. Placeholder: Simulate finding a primary route and micro-routes.
-    #    A real implementation would use a routing algorithm (like A* or Dijkstra)
-    #    weighted by our TARI score.
-    
-    # For now, just return a mock response.
+    # Simulate a midpoint for a more interesting route
+    midpoint_lat = (start_cp.latitude + end_cp.latitude) / 2 + 0.005 # adding small offset for a curve
+    midpoint_lon = (start_cp.longitude + end_cp.longitude) / 2 + 0.005
+
+    # Simulate AI risk scoring
+    risk_1 = 1
+    risk_2 = 3
+
+    # Create mock route data with coordinates for the map
     mock_route_data = {
         "primary_route": {
             "segments": [
-                {"from": "Start", "to": "Midpoint A", "tari_score": 1},
-                {"from": "Midpoint A", "to": "End", "tari_score": simulated_risk_score},
+                {
+                    "from": start_cp.name,
+                    "to": "Simulated Midpoint",
+                    "tari_score": risk_1,
+                    "path": [
+                        [start_cp.latitude, start_cp.longitude],
+                        [midpoint_lat, midpoint_lon]
+                    ]
+                },
+                {
+                    "from": "Simulated Midpoint",
+                    "to": end_cp.name,
+                    "tari_score": risk_2,
+                    "path": [
+                        [midpoint_lat, midpoint_lon],
+                        [end_cp.latitude, end_cp.longitude]
+                    ]
+                },
             ],
-            "total_distance_km": 120,
-            "estimated_duration_mins": 150,
+            # These are just estimations for the mock
+            "total_distance_km": 150, 
+            "estimated_duration_mins": 180,
         },
         "alternative_routes": [],
     }

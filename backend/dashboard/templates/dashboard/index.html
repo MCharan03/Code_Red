@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Convoy Ops</title>
     {% load static %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <link rel="stylesheet" href="{% static 'dashboard/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -17,58 +18,90 @@
 
         <nav class="navigation">
             <button><i class="fa-solid fa-map-location-dot"></i> Navigation</button>
-            <button><i class="fa-solid fa-truck-moving"></i> Active Convoys</button>
-            <button><i class="fa-solid fa-tower-broadcast"></i> Comms Relay</button>
-            <button><i class="fa-solid fa-chart-line"></i> Intel Analytics</button>
-            <button><i class="fa-solid fa-gear"></i> System Config</button>
+            <button id="active-convoys-button"><i class="fa-solid fa-truck-moving"></i> Active Convoys</button>
+            <button id="comms-relay-button"><i class="fa-solid fa-tower-broadcast"></i> Comms Relay</button>
+            <button id="intel-analytics-button"><i class="fa-solid fa-chart-line"></i> Intel Analytics</button>
+            <button id="config-button"><i class="fa-solid fa-gear"></i> System Config</button>
         </nav>
 
-        <main class="main-content">
-            <h2>ANALYTICS</h2>
+        <div class="dashboard-body">
+            <div id="map"></div>
+            <div class="sidebar">
+                <section class="status-section">
+                    <div class="data-sync">
+                        <span>Data Sync</span>
+                        <button class="icon-button"><i class="fa-solid fa-rotate"></i></button>
+                        <span class="timestamp">LAST: 16:04:40</span>
+                    </div>
+                    <div class="online-status">
+                        <i class="fa-solid fa-wifi"></i>
+                        <span>ONLINE</span>
+                    </div>
+                </section>
 
-            <section class="status-section">
-                <div class="data-sync">
-                    <span>Data Sync</span>
-                    <button class="icon-button"><i class="fa-solid fa-rotate"></i></button>
-                    <span class="timestamp">LAST: 16:04:40</span>
-                </div>
-                <div class="online-status">
-                    <i class="fa-solid fa-wifi"></i>
-                    <span>ONLINE</span>
-                </div>
-            </section>
+                <section class="route-parameters">
+                    <h3>Route Parameters</h3>
+                    <div class="form-group">
+                        <label for="start-checkpoint">Start Checkpoint</label>
+                        <select id="start-checkpoint" name="start-checkpoint">
+                            <option>Select Origin...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="target-destination">Target Destination</label>
+                        <select id="target-destination" name="target-destination">
+                            <option>Select Destination...</option>
+                        </select>
+                    </div>
+                    <button class="generate-route">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        GENERATE SMART ROUTE
+                    </button>
+                </section>
 
-            <section class="route-parameters">
-                <h3>Route Parameters</h3>
-                <div class="form-group">
-                    <label for="start-checkpoint">Start Checkpoint</label>
-                    <select id="start-checkpoint" name="start-checkpoint">
-                        <option>Select Origin...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="target-destination">Target Destination</label>
-                    <select id="target-destination" name="target-destination">
-                        <option>Select Destination...</option>
-                    </select>
-                </div>
-                <button class="generate-route">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    GENERATE SMART ROUTE
-                </button>
-            </section>
+                <section id="fleet-status" class="fleet-status">
+                    <h3>Fleet Status</h3>
+                    <div id="fleet-list">
+                        <!-- Vehicle items will be rendered here by JavaScript -->
+                    </div>
+                </section>
 
-            <section class="footer-status">
-                <p class="awaiting-params">AWAITING ROUTE PARAMETERS</p>
-                <p class="satellite-link">SECURE SATELLITE LINK ESTABLISHED</p>
-                <div class="zoom-controls">
-                    <button>+</button>
-                    <button>-</button>
-                </div>
-            </section>
-        </main>
+                <section id="intel-analytics-panel" class="intel-analytics hidden">
+                    <h3>Intel Analytics</h3>
+                    <p>(Placeholder for charts and statistics)</p>
+                </section>
+
+                <section class="footer-status">
+                    <p class="awaiting-params">AWAITING ROUTE PARAMETERS</p>
+                    <p class="satellite-link">SECURE SATELLITE LINK ESTABLISHED</p>
+                    <div id="route-details"></div>
+                </section>
+            </div>
+        </div>
     </div>
 
+    <!-- System Config Modal -->
+    <div id="config-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>System Configuration</h2>
+                <button id="modal-close-button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Map Theme:</p>
+                <select>
+                    <option>Standard</option>
+                    <option>Dark</option>
+                    <option>High Contrast</option>
+                </select>
+                <hr>
+                <p>Notifications:</p>
+                <label><input type="checkbox" checked> Enable real-time alerts</label>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="{% static 'dashboard/script.js' %}"></script>
 </body>
 </html>

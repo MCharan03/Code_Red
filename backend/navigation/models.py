@@ -9,6 +9,7 @@ class Checkpoint(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     is_choke_point = models.BooleanField(default=False, help_text="Is this a known traffic choke-point?")
+    is_comms_relay = models.BooleanField(default=False, help_text="Is this a communications relay station?")
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
